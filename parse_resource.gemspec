@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
     "test/test_parse_user.rb",
     "test/test_query.rb"
   ]
-  s.homepage = "http://github.com/adelevie/parse_resource"
+  s.homepage = "http://github.com/pius/parse_resource"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
