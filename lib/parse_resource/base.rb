@@ -256,6 +256,43 @@ module ParseResource
       master_key = @@settings['master_key']
       RestClient::Resource.new(base_uri, app_id, master_key)
     end
+    
+    def self.send_notification(channel, message)
+      base_uri = "https://api.parse.com/1/push"
+      app_id     = @@settings['app_id']
+      master_key = @@settings['master_key']
+      resource = RestClient::Resource.new(base_uri, app_id, master_key)
+      
+      attributes = HashWithIndifferentAccess.new({channel: channel, data: {alert: message}})
+      
+      attributes = attributes.to_json
+      
+      opts = {:content_type => "application/json"}
+      result = self.instance_resource.post(attributes, opts) do |resp, req, res, &block|
+        logger.warn "sent notification: #{resp}, #{req}, #{res}"
+        # case resp.code
+        # when 400
+        #   
+        #   # https://www.parse.com/docs/ios/api/Classes/PFConstants.html
+        #   error_response = JSON.parse(resp)
+        #   pe = ParseError.new(error_response["code"], error_response["error"]).to_array
+        #   self.errors.add(pe[0], pe[1])
+        #   
+        # else
+        # 
+        #   @attributes.merge!(JSON.parse(resp))
+        #   @attributes.merge!(@unsaved_attributes)
+        #   @unsaved_attributes = {}
+        #   create_setters_and_getters!
+        # 
+        #   self
+        # end
+        # 
+        result
+      end
+      
+      
+    end
 
     # Find a ParseResource::Base object by ID
     #
