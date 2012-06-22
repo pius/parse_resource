@@ -269,7 +269,7 @@ module ParseResource
       
       opts = {:content_type => "application/json"}
       result = resource.post(attributes, opts) do |resp, req, res, &block|
-        logger.warn "sent notification: #{resp}, #{req}, #{res}"
+        #logger.warn "sent notification: #{resp}, #{req}, #{res}"
         # case resp.code
         # when 400
         #   
