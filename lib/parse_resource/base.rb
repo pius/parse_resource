@@ -57,7 +57,7 @@ module ParseResource
           @attributes[name] ? @attributes[name] : @unsaved_attributes[name]
         end
         define_method("#{name}=") do |val|
-          val = val.to_pointer if val.respond_to?(:to_pointer)
+            val = val.to_pointer if val.respond_to?(:to_pointer)
           
           @attributes[name] = val
           @unsaved_attributes[name] = val
@@ -79,6 +79,13 @@ module ParseResource
     # @param [Hash] options Added so that you can specify :class_name => '...'. It does nothing at all, but helps you write self-documenting code.
     def self.belongs_to(parent, options = {})
       field(parent)
+    end
+    
+    def add_to_relation(relation_name, obj)
+      klass_name = obj.class.model_name
+      update({relation_name => {"__op" => "AddRelation", 
+                        "objects" => [{"__type" => "Pointer", "className" => klass_name, "objectId" => obj.id}]}
+                        })
     end
     
     def to_pointer
